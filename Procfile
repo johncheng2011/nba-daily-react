@@ -1,1 +1,1 @@
-web: gunicorn deploy:index
+web: python index.py
