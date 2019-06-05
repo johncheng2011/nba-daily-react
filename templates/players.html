@@ -1,0 +1,158 @@
+{% extends 'layout.html' %}
+{%block scripts%}
+
+{%endblock scripts%}
+
+{% block content %}
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
+    {%if messages%}
+        {% for catagory, message in messages %}
+            <div>
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+{%endwith%} -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <h1>Players</h1>
+    <table id="your-table"  class="table table-hover table-bordered "  width="100%"></table>
+    
+
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/css/jquery.dataTables.min.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+ 
+    
+    <script>
+   
+    var testarr
+     $.getJSON('http://localhost:5000/_players/{{date}}',function(data){
+        $('#your-table').DataTable( 
+	    {
+            
+	    	data: data,
+            "order": [[ 24, "desc" ]],
+            "autoWidth": true,
+	    	"pageLength": 25,
+
+            "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 2 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 5 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 6 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            ],
+            fixedHeader:[true],
+	    	columns: [
+				{ title: 'Player ID'},
+				{ title: "Player Name" },	
+                { title: 'Team ID' },
+				{ title: "Team" },	
+                { title: 'GP' },
+				{ title: "Win" },	
+                { title: 'Loss' },
+				{ title: "Min" },	
+                { title: 'Fgm' },
+				{ title: "Fga" },	
+                { title: 'FG_pct' },
+				{ title: "Fg3m" },	
+                { title: 'Fg3a' },
+				{ title: "FG3_pct" },	
+                { title: 'FTm' },
+				{ title: "FTa" },	
+                { title: 'FT_pct' },
+				{ title: "oreb" },	
+                { title: 'dreb' },
+				{ title: "treb" },	
+                { title: 'ast' },	
+                { title: 'stl' },
+				{ title: "blk" },				 
+                { title: 'pts' },
+                { title: "tov" },
+				{ title: "fouls" },	
+                
+
+							 
+			],    	       
+	    } );
+
+    });
+    
+    
+    </script>
+
+<!-- <h1>Players</h1>
+<table id="players" class ="display">
+    {{date}}
+    <thead>
+        <tr class = "table">
+                <th>Player Name</th>
+                <th>Team</th>
+                <th>min</th>
+                <th>fgm</th>
+                <th>fga</th>
+                <th>fg_pct</th>
+                <th>3p fgm</th>
+                <th>3p fga</th>
+                <th>3p fg_pct</th>
+                <th>ftm</th>
+                <th>fta</th>
+                <th>ft_pct</th>
+                <th>treb</th>
+                <th>ast</th>
+                <th>stls</th>
+                <th>blks</th>
+                <th>pts</th>
+                <th>tov</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    {% for player in players%}
+        <tr class = "table">
+            <td>{{player[1]}}</td> 
+            <td>{{player[3]}}</td>
+            <td>{{player[7]}}</td>
+            <td>{{player[8]}}</td>
+            <td>{{player[9]}}</td>
+            <td>{{player[10]}}</td>
+            <td>{{player[11]}}</td>
+            <td>{{player[12]}}</td>
+            <td>{{player[13]}}</td>
+            <td>{{player[14]}}</td>
+            <td>{{player[15]}}</td>
+            <td>{{player[16]}}</td>
+            <td>{{player[19]}}</td>
+            <td>{{player[20]}}</td>
+            <td>{{player[22]}}</td>
+            <td>{{player[23]}}</td>
+            <td>{{player[24]}}</td>
+            <td>{{player[21]}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table> -->
+
+{%endblock content%}
