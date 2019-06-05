@@ -10,13 +10,6 @@ from decimal import Decimal
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
 
-# db =  mysql.connector.connect(
-#     host = 'localhost',
-#     user = 'root',
-#     passwd = 'gall2droyilx',
-#     database = 'nbaplayers'
-# )
-# mycursor = db.cursor()
 
 
 class DecimalEncoder(json.JSONEncoder):
@@ -83,17 +76,17 @@ def playerzscores(date):
 @app.route("/_players/<date>")
 def playerdata(date):
     db =  mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'gall2droyilx',
-    database = 'nbaplayers'
+    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user = "wbe5sn77tagogvdz",
+    passwd = "n9eckiq9qeyssuqy",
+    database = "pg3wk6oqwj8tellc"
     )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()
     players = []
     for game in games:
-        mycursor.execute('SELECT * FROM playerstest WHERE(teamid = '+ str(game[1]) +')')
+        mycursor.execute('SELECT * FROM playerstats WHERE(teamid = '+ str(game[1]) +')')
         players += mycursor.fetchall()
     #return url_for('players',title='games',form=form,games=games,players=players)
     db.disconnect()
@@ -103,10 +96,10 @@ def playerdata(date):
 @app.route("/_players_zscores/<date>")
 def getplayerszscores(date):
     db =  mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'gall2droyilx',
-    database = 'nbaplayers'
+    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user = "wbe5sn77tagogvdz",
+    passwd = "n9eckiq9qeyssuqy",
+    database = "pg3wk6oqwj8tellc"
     )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
