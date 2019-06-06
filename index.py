@@ -5,11 +5,13 @@ from flask_wtf import Form
 import mysql.connector
 import json
 from decimal import Decimal
+from flask_cors import CORS
+from datetime import datetime
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
-
+CORS(app)
 
 
 class DecimalEncoder(json.JSONEncoder):
@@ -21,7 +23,7 @@ class DecimalEncoder(json.JSONEncoder):
 
 title = "hello"
 class date(Form):
-    enterDate = DateField('dateInput',format = '%Y-%m-%d')
+    enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime.today())
     selectType = RadioField("Data Type", choices=[('1','per-game'),('2','zscores')],default='1')
     submit = SubmitField('submit')
 
