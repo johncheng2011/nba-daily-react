@@ -29,7 +29,20 @@
             "order": [[ 15, "desc" ]],
             "autoWidth": true,
 	    	"pageLength": 25,
-
+            "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 2 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            ],
             fixedHeader:[true],
 	    	columns: [
 				{ title: 'Player ID'},
