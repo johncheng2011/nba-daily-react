@@ -48,31 +48,54 @@ def index():
 @app.route("/games")
 def games():
     return render_template('games.html')
+
+@app.route("/all_players")
+def all_players():
+    db =  mysql.connector.connect(
+    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user = "wbe5sn77tagogvdz",
+    passwd = "n9eckiq9qeyssuqy",
+    database = "pg3wk6oqwj8tellc"
+    )
+    mycursor = db.cursor()
+    players = []
+    
+    mycursor.execute('SELECT * FROM playerstats')
+    players += mycursor.fetchall()
+    
+    db.disconnect()
+    players.sort(key = lambda x: x[1])
+    return render_template('all_players.html',players=players)
+
+
+@app.route("/all_players_zscores")
+def all_playersz():
+    db =  mysql.connector.connect(
+    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user = "wbe5sn77tagogvdz",
+    passwd = "n9eckiq9qeyssuqy",
+    database = "pg3wk6oqwj8tellc"
+    )
+    mycursor = db.cursor()
+    players = []
+    
+    mycursor.execute('SELECT * FROM playerstatsz')
+    players += mycursor.fetchall()
+    
+    db.disconnect()
+    players.sort(key = lambda x: x[1])
+    return render_template('all_players_zscores.html',players=players)
+
+
 @app.route("/players/<date>")
 def players(date):
-    # mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
-    # games = mycursor.fetchall()
-    # players = []
-    # for game in games:
-    #     #mycursor.execute('SELECT * FROM playerstatspergame WHERE(teamid = '+ str(game[1]) +')')
-    #     mycursor.execute('SELECT * FROM playerstest WHERE(teamid = '+ str(game[1]) +')')
-    #     players += mycursor.fetchall()
-    # #return url_for('players',title='games',form=form,games=games,players=players)
-    # players.sort(key = lambda x: x[1])
+    
     return render_template('players.html',date=date)
 
 
 @app.route("/players_zscores/<date>")
 def playerzscores(date):
-    # mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
-    # games = mycursor.fetchall()
-    # players = []
-    # for game in games:
-    #     #mycursor.execute('SELECT * FROM playerstatspergame WHERE(teamid = '+ str(game[1]) +')')
-    #     mycursor.execute('SELECT * FROM playerstatsz WHERE(teamid = '+ str(game[1]) +')')
-    #     players += mycursor.fetchall()
-    # #return url_for('players',title='games',form=form,games=games,players=players)
-    # players.sort(key = lambda x: x[1])
+    
     return render_template('players_zscores.html',title="players",players=players,date=date)
 @app.route("/_players/<date>")
 def playerdata(date):
@@ -89,7 +112,7 @@ def playerdata(date):
     for game in games:
         mycursor.execute('SELECT * FROM playerstats WHERE(teamid = '+ str(game[1]) +')')
         players += mycursor.fetchall()
-    #return url_for('players',title='games',form=form,games=games,players=players)
+    
     db.disconnect()
     players.sort(key = lambda x: x[1])
     return json.dumps(players,cls=DecimalEncoder)
@@ -107,14 +130,12 @@ def getplayerszscores(date):
     games = mycursor.fetchall()
     players = []
     for game in games:
-        #mycursor.execute('SELECT * FROM playerstatspergame WHERE(teamid = '+ str(game[1]) +')')
+        
         mycursor.execute('SELECT * FROM playerstatsz WHERE(teamid = '+ str(game[1]) +')')
         players += mycursor.fetchall()
-    #return url_for('players',title='games',form=form,games=games,players=players)
     db.disconnect()
     players.sort(key = lambda x: x[1])
     return json.dumps(players,cls=DecimalEncoder)
 
-#"SELECT * FROM games WHERE (STR_TO_DATE(gamedate,'%Y-%m-%e') = STR_TO_DATE('".date("Y-m-d",strtotime($_POST['date']))."','%Y-%m-%e'))"
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

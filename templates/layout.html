@@ -9,7 +9,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>{{title}}</title>
-        {%block scripts%}{% endblock scripts %}
+        
     </head>
     <body>
         <!-- Navigation -->
@@ -26,17 +26,25 @@
                     <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('all_players')}}">All Players Per-Game
+                    <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{url_for('all_playersz')}}">All Players Zscores
+                    <span class="sr-only">(current)</span>
+                    </a>
+                </li>
                 </ul>
             </div>
             </div>
         </nav>
-        <!-- <div class = "container"> -->
+        
         <div>
             {% block content %}{% endblock content %}
         </div>
-         <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    
+         
     </body>
     
 </html>
