@@ -19,8 +19,10 @@ class DecimalEncoder(json.JSONEncoder):
             return float(o)
         return super(DecimalEncoder, self).default(o)
 
-
-title = "hello"
+def tomDate(date):
+    date += datetime.timedelta(days=1)
+    return date
+app.jinja_env.filters['tomorrowDate'] = tomDate
 class date(Form):
     enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime.today())
     selectType = RadioField("Data Type", choices=[('1','per-game'),('2','zscores')],default='1')
@@ -94,12 +96,8 @@ def players(date):
 @app.route("/players_zscores/<date>")
 def playerzscores(date):
     
-    return render_template('players_zscores.html',title="players",players=players,date=date)
+    return render_template('players_zscores.html',players=players,date=date)
 
-@app.tomDate
-def tomDate(date):
-    date += date.datetime(day=1)
-    return date
 
 
 @app.route("/_players/<date>")
