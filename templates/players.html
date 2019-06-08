@@ -4,7 +4,7 @@
 {% block content %}
 
 
-    <a href = "{{urlfor('players',date=datetime.timedelta(days=1))}}">tomorrow</a>
+    <a href = "{{urlfor('players',date=tomDate(date)}}">tomorrow</a>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 

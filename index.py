@@ -95,6 +95,13 @@ def players(date):
 def playerzscores(date):
     
     return render_template('players_zscores.html',title="players",players=players,date=date)
+
+@app.tomDate
+def tomDate(date):
+    date += date.datetime(day=1)
+    return date
+
+
 @app.route("/_players/<date>")
 def playerdata(date):
     db = mysql.connector.connect(
