@@ -20,7 +20,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 def tomDate(date):
-    date += datetime.timedelta(days=1)
+    date += timedelta(days=1)
     return date
 app.jinja_env.filters['tomorrowDate'] = tomDate
 class date(Form):
