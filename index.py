@@ -43,20 +43,18 @@ def index():
 
 
 
-
-
 @app.route("/games")
 def games():
     return render_template('games.html')
 
 @app.route("/all_players")
 def all_players():
-    db =  mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
-    )
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
     mycursor = db.cursor()
     players = []
     
@@ -70,12 +68,12 @@ def all_players():
 
 @app.route("/all_players_zscores")
 def all_playersz():
-    db =  mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
-    )
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
     mycursor = db.cursor()
     players = []
     
@@ -99,12 +97,12 @@ def playerzscores(date):
     return render_template('players_zscores.html',title="players",players=players,date=date)
 @app.route("/_players/<date>")
 def playerdata(date):
-    db =  mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
-    )
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()
@@ -119,12 +117,12 @@ def playerdata(date):
 
 @app.route("/_players_zscores/<date>")
 def getplayerszscores(date):
-    db =  mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
-    )
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()

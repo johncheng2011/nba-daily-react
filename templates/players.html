@@ -4,6 +4,8 @@
 {% block content %}
 
 
+    <a href = "{{urlfor('players',date={{date}}+1)}}">tomorrow</a>
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <h1>Players Playing on {{date}}</h1>
