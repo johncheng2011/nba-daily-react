@@ -20,9 +20,20 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 def tomDate(date):
-    date += timedelta(days=1)
-    return date
+    dateObj = datetime.strptime(date,'%Y-%m-%d')
+    dateObj += timedelta(days=1)
+    dateStr = datetime.strftime(dateObj, '%Y-%m-%d')
+    return dateStr
 app.jinja_env.filters['tomorrowDate'] = tomDate
+
+def yesDate(date):
+    dateObj = datetime.strptime(date,'%Y-%m-%d')
+    dateObj += timedelta(days=1)
+    dateStr = datetime.strftime(dateObj, '%Y-%m-%d')
+    return dateStr
+app.jinja_env.filters['yesterdayDate'] = yesDate
+
+
 class date(Form):
     enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime.today())
     selectType = RadioField("Data Type", choices=[('1','per-game'),('2','zscores')],default='1')
@@ -34,7 +45,9 @@ def index():
     form = date()
     if form.validate_on_submit():
         if(form.selectType.data == '1'):
-            return redirect(url_for('players',date=form.enterDate.data))
+            inDate = form.enterDate.data
+            
+            return redirect(url_for('players',date=inDate))
         else:
             return redirect(url_for('playerzscores',date=form.enterDate.data))
         #return url_for('players',title='games',form=form,games=games,players=players)
