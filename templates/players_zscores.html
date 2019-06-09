@@ -3,7 +3,8 @@
 
 {% block content %}
 
-
+    <a href = "{{url_for('playerzscores',date=date|yesterdayDate)}}">yesterday</a>
+    <a href = "{{url_for('playerzscores',date=date|tomorrowDate)}}">tomorrow</a>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <h1>Players Playing on {{date}}</h1>

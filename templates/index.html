@@ -7,13 +7,20 @@
 
       
 
+
+<div class="container">
 <h1>Home!</h1>
-<form method = "POST" action="">
-    {{form.hidden_tag() }}
-    {{form.enterDate}}
-    {{form.selectType(style="list-style:none")}}
-    {{form.submit}}
-</form>
+<div class = "row">
+    <div class = "col-sm-6">
+        <form method = "POST" action="">
+            {{form.hidden_tag() }}
+            {{form.enterDate}}
+            {{form.selectType(style="list-style:none; padding:0")}}
+            {{form.submit}}
+        </form>
+    </div>
+</div>
+</div>
 
 
 

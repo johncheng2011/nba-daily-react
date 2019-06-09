@@ -5,7 +5,7 @@
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    <h1>Players Zscores</h1>
+   
     <table id="your-table"  class="table table-hover table-bordered "  width="100%"></table>
     
 
@@ -68,6 +68,20 @@
     var table = $('#players').DataTable( {
         "responsive": true,
         "pageLength": 25,
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 2 ],
+                "width": "20%",
+                "visible": false,
+                "searchable": false
+            },
+            ],
         "columns": [
             { data: 0 },
             { data: 1 },
@@ -91,7 +105,11 @@
 } );
     
     </script>
-    <table id ="players">
+    <div class = "container">
+            <h1>Players Zscores</h1>
+        <div class = "row">
+                
+    <table   id ="players">
         <thead>
             <tr>
                 <th>PlayerID</th>
@@ -139,6 +157,7 @@
         </tbody>
     
     </table>
-
+    </div>
+</div>
 
 {%endblock content%}
