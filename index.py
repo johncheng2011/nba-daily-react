@@ -1,12 +1,13 @@
 from flask import Flask, render_template, url_for, redirect, flash, request, jsonify
 from wtforms.fields.html5 import DateField
 from wtforms import SubmitField, RadioField
-from flask_wtf import Form 
+from flask_wtf import FlaskForm
 import mysql.connector
 import json
 from decimal import Decimal
 from datetime import datetime, timedelta
 from Data_Scripts import database
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
@@ -34,8 +35,8 @@ def yesDate(date):
 app.jinja_env.filters['yesterdayDate'] = yesDate
 
 
-class date(Form):
-    enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime.today())
+class date(FlaskForm):
+    enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime(2018,10,16))
     selectType = RadioField("Data Type", choices=[('1','per-game'),('2','zscores')],default='1')
     submit = SubmitField('submit')
 

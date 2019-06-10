@@ -5,19 +5,49 @@
 
 
 
-      
+<div class="jumbotron jumbotron-flex">
+    <div class = "container">
+        <h1>Home!</h1>
+    </div>
+</div>
 
 
 <div class="container">
-<h1>Home!</h1>
+
 <div class = "row">
     <div class = "col-sm-6">
-        <form method = "POST" action="">
-            {{form.hidden_tag() }}
+        <form  method = "POST" action="">
+            <h2 style = "display:inline">Select a Date</h2>(Default start of last season 10/16/18)
+            {{form.hidden_tag()}}
             {{form.enterDate}}
-            {{form.selectType(style="list-style:none; padding:0")}}
+            {%for subfield in form.selectType%}
+                {{subfield}}
+                {{subfield.label}}
+            {%endfor%}
+            <br>
+            <!-- {{form.selectType(style="list-style:none; padding:0")}} -->
             {{form.submit}}
         </form>
+    </div>
+    <div class = "col-sm-6">
+            <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">How To Use</h4>
+                      <p class="card-text">
+                        Select a day and either per-game stats or zscores. It will return a table of all the players playing on that day with
+                        the desired stats
+                      </p>
+                      <h4 class="card-title">Zscores for FG and FT Percentages</h4>
+                      <p>
+                        The scores for Field Goal and Free Throw percentages are calculated using a the percentages weighted by the attempts per game.
+                        This weight is calculated using:
+                      </p>
+                      <p class ="text-center">
+                          ((Player AVG %)-(League AVG %))*(Player Attempts Per Game)
+                      </p>
+                    </div>
+                  </div>
+                  
     </div>
 </div>
 </div>
