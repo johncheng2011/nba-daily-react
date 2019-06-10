@@ -29,7 +29,7 @@ app.jinja_env.filters['tomorrowDate'] = tomDate
 
 def yesDate(date):
     dateObj = datetime.strptime(date,'%Y-%m-%d')
-    dateObj += timedelta(days=1)
+    dateObj -= timedelta(days=1)
     dateStr = datetime.strftime(dateObj, '%Y-%m-%d')
     return dateStr
 app.jinja_env.filters['yesterdayDate'] = yesDate
