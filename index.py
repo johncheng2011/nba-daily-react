@@ -7,9 +7,10 @@ import json
 from decimal import Decimal
 from datetime import datetime, timedelta
 from Data_Scripts import database
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
 
 

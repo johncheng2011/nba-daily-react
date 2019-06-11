@@ -2,6 +2,7 @@ certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
 Flask==1.0.3
+Flask-Cors==3.0.8
 Flask-WTF==0.14.2
 gunicorn==19.9.0
 idna==2.8
@@ -12,6 +13,7 @@ mysql-connector==2.2.9
 nba-api==1.1.4
 numpy==1.16.4
 requests==2.22.0
+six==1.12.0
 urllib3==1.25.3
 Werkzeug==0.15.4
 WTForms==2.2.1
