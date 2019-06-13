@@ -9,7 +9,8 @@ mydb = mysql.connector.connect(
     database = "pg3wk6oqwj8tellc"
 )
 mycursor = mydb.cursor()
-#mycursor.execute("DROP TABLE games")
+
+#create table and add game data for each game
 mycursor.execute("CREATE TABLE IF NOT EXISTS games (season INT, teamid INT, teamname VARCHAR(20),gamedate DATE, matchup VARCHAR (255), gameid INT)")
 for games in game["resultSets"][0]["rowSet"]:
     sql = "INSERT INTO games(season,teamid,teamname,gamedate,matchup,gameid) VALUES (%s,%s,%s,%s,%s,%s)"
@@ -19,4 +20,3 @@ mydb.commit()
 mycursor.execute("SHOW TABLES")
 for x in mycursor:
     print(x)
-#mycursor.execute("CREATE TABLE games (season INT, teamid INT, teamname VARCHAR(255), gamedate DATE, matchup VARCHAR(255), gameid INT)")
