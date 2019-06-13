@@ -52,9 +52,6 @@ def index():
             return redirect(url_for('players',date=inDate))
         else:
             return redirect(url_for('playerzscores',date=form.enterDate.data))
-        #return url_for('players',title='games',form=form,games=games,players=players)
-        #return redirect(url_for('test',date=form.enterDate.data))
-        #return render_template('players.html',title="games",form=form,games=games,players=players)
     return render_template('index.html',form = form,title="home")
 
 
