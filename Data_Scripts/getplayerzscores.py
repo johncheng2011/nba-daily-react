@@ -36,23 +36,25 @@ cursor = db.cursor()
 
 #get teams
 teams_dict = commonteamyears.CommonTeamYears()
-teams_dict = teams_dict.get_dict()
+teams_dict = teams_dict.team_years.get_dict()
+
 teams = []
 for teamNum in range(30):
-    teams.append( teams_dict["resultSets"][0]["rowSet"][teamNum])
+    teams.append(teams_dict["data"][teamNum])
 
 #get rosters
 rosters = []
 for team in teams:
     time.sleep(1)
     rosters_dict = commonteamroster.CommonTeamRoster(season="2018-19",team_id=team[1])
-    rosters_dict = rosters_dict.get_dict()
-    rosters.append(rosters_dict["resultSets"][0]["rowSet"])
+    rosters_dict = rosters_dict.common_team_roster.get_dict()
+    rosters.append(rosters_dict["data"])
+
 
 #get playerstats
 leaguestats = leaguedashplayerstats.LeagueDashPlayerStats(per_mode_detailed="PerGame",season="2018-19")
-leaguestats = leaguestats.get_dict()
-leaguestats = leaguestats["resultSets"][0]["rowSet"]
+leaguestats = leaguestats.league_dash_player_stats.get_dict()
+leaguestats = leaguestats["data"]
 leaguestats.sort(key = lambda x: x[0])
 leaguestats_length = len(leaguestats)-1
 

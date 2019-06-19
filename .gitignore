@@ -3,3 +3,4 @@ include
 lib
 .vscode
 __pycache__
+Data_Scripts/playersCSV
