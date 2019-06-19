@@ -8,6 +8,7 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 from Data_Scripts import database
 from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -152,5 +153,9 @@ def getplayerszscores(date):
     players.sort(key = lambda x: x[1])
     return json.dumps(players,cls=DecimalEncoder)
 
+@app.route("/asdf")
+def player_page():
+    test = pd.read_csv('Data_Scripts/playersCSV/1713_Vince-Carter.csv')
+    return render_template('player_page.html', data=test)
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

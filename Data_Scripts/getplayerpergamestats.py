@@ -69,11 +69,3 @@ for player in leaguestats:
     path = 'Data_Scripts/playersCSV/' + str(player[0]) + "_" + str(player[1].replace(" ","-") + ".csv")
     player_stats.to_csv(path,index=False)
     print(player[1].replace(" ","-"))
-
-
-# Deandre-Ayton
-# Luka-Doncic
-# Theo-Pinson
-# Ray-Spalding
-# Bonzie-Colson
-# Vincent-Edwards
