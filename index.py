@@ -9,9 +9,12 @@ from datetime import datetime, timedelta
 from Data_Scripts import database
 from flask_cors import CORS
 import pandas as pd
-
+from nba_api.stats.endpoints import commonteamyears
+from nba_api.stats.endpoints import commonteamroster
+import time
 app = Flask(__name__)
 CORS(app)
+
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
 
 
@@ -155,7 +158,38 @@ def getplayerszscores(date):
 
 @app.route("/asdf")
 def player_page():
-    test = pd.read_csv('Data_Scripts/playersCSV/1713_Vince-Carter.csv')
-    return render_template('player_page.html', data=test)
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
+    mycursor = db.cursor()
+    mycursor.execute('SELECT * FROM playergamelog WHERE(playerid=2544) ')
+    gamelog = mycursor.fetchall()
+    mycursor.execute('SELECT * FROM playerstats WHERE(playerid=2544) ')
+    pergame = mycursor.fetchall()
+    mycursor.execute('SELECT * FROM playerstatsz WHERE(playerid=2544) ')
+    zscore = mycursor.fetchall()
+    return render_template('player_page.html', gamelog=gamelog, pergame=pergame,zscore=zscore)
+
+@app.route("/teams")
+def teams():
+    #get teams
+    teams_dict = commonteamyears.CommonTeamYears()
+    teams_dict = teams_dict.team_years.get_dict()
+
+    teams = []
+    for teamNum in range(30):
+        teams.append(teams_dict["data"][teamNum])
+
+    #get rosters
+    rosters = []
+    for team in teams:
+        time.sleep(1)
+        rosters_dict = commonteamroster.CommonTeamRoster(season="2018-19",team_id=team[1])
+        rosters_dict = rosters_dict.common_team_roster.get_dict()
+        rosters.append(rosters_dict["data"])
+    return render_template('teams.html', rosters=rosters)
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

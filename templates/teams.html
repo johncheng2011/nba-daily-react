@@ -1,0 +1,10 @@
+{%extends 'layout.html'%}
+
+{%block content%}
+
+{%for team in rosters%}
+{%for player in team%}
+{{player}}
+{%endfor%}
+{%endfor%}
+{%endblock content%}
