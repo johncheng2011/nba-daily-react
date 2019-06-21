@@ -24,9 +24,9 @@ for team in teams:
 
 db = mysql.connector.connect(
     host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
+    user = database.databaseInfo["host"],
+    passwd = database.databaseInfo["host"],
+    database = database.databaseInfo["host"]
 )
 cursor = db.cursor()
 

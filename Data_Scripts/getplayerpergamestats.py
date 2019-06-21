@@ -28,10 +28,10 @@ class NumpyMySQLConverter(mysql.connector.conversion.MySQLConverter):
         return float(value)
 
 db = mysql.connector.connect(
-    host =  'localhost',
-    user = 'root',
-    passwd = 'gall2droyilx',
-    database = 'nbaplayers'
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
 )
 
 db.set_converter_class(NumpyMySQLConverter)
@@ -64,7 +64,7 @@ leaguestats_length = len(leaguestats)-1
 
 sql = "CREATE TABLE IF NOT EXISTS playergamelog (seasonid INT, playerid INT, gameid INT, gamedate DATE, matchup VARCHAR(255), win VARCHAR(255),min INT,"
 sql += "fgm INT, fga INT, fg_pct DECIMAL(4,3), fg3m INT, fg3a INT, fg3_pct DECIMAL(4,3), ftm INT, fta INT, ft_pct DECIMAL(4,3), oreb INt, dreb INT, reb INT,"
-sql += "ast INT, stl INT, blk INT, tov INT, pf INT, pts INT, plusminus INT, PRIMARY KEY (playerid, gamedate))"
+sql += "ast INT, stl INT, blk INT, tov INT, pf INT, pts INT, plusminus INT )"
 cursor.execute(sql)
 
 for player in leaguestats:
@@ -72,13 +72,15 @@ for player in leaguestats:
     time.sleep(2)
     player_stats = player_stats.player_game_log.get_data_frame()
     for index, game in player_stats.iterrows():
-        sql = "INSERT INTO playergamelog (seasonid,playerid,gameid,gamedate,matchup,win,min,fgm,fga,fg_pct,fg3m,fg3a,fg3_pct,ftm,fta,ft_pct,oreb,dreb,reb,ast,stl,blk,tov,pf,pts,plusminus) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE seasonid = %s"
+        sql = "INSERT INTO playergamelog (seasonid,playerid,gameid,gamedate,matchup,win,min,fgm,fga,fg_pct,fg3m,fg3a,fg3_pct,ftm,fta,ft_pct,oreb,dreb,reb,ast,stl,blk,tov,pf,pts,plusminus) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         values = ()
         for i in range(len(game)-1):
             if(i == 3):
                 game[i] = datetime.datetime.strptime(game[i],'%b %d, %Y')
             values = values + (game[i],)
-        values = values + (game[0],)
         cursor.execute(sql,values)
+        print(game[1])
         db.commit()
-
+    # path = 'Data_Scripts/playersCSV/' + str(player[0]) + "_" + str(player[1].replace(" ","-") + ".csv")
+    # player_stats.to_csv(path,index=False)
+    # print(player[1].replace(" ","-"))
