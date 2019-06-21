@@ -156,8 +156,9 @@ def getplayerszscores(date):
     players.sort(key = lambda x: x[1])
     return json.dumps(players,cls=DecimalEncoder)
 
-@app.route("/asdf")
-def player_page():
+@app.route("/<player>")
+def player_page(player):
+    name,id = player.split('_')
     db = mysql.connector.connect(
     host =  database.databaseInfo["host"],
     user = database.databaseInfo["user"],
@@ -165,31 +166,38 @@ def player_page():
     database = database.databaseInfo["database"]
 )
     mycursor = db.cursor()
-    mycursor.execute('SELECT * FROM playergamelog WHERE(playerid=2544) ')
+    sql = 'SELECT * FROM playergamelog WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
     gamelog = mycursor.fetchall()
-    mycursor.execute('SELECT * FROM playerstats WHERE(playerid=2544) ')
+    sql = 'SELECT * FROM playerstats WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
     pergame = mycursor.fetchall()
-    mycursor.execute('SELECT * FROM playerstatsz WHERE(playerid=2544) ')
+    sql = 'SELECT * FROM playerstatsz WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
     zscore = mycursor.fetchall()
     return render_template('player_page.html', gamelog=gamelog, pergame=pergame,zscore=zscore)
 
 @app.route("/teams")
 def teams():
-    #get teams
-    teams_dict = commonteamyears.CommonTeamYears()
-    teams_dict = teams_dict.team_years.get_dict()
-
-    teams = []
-    for teamNum in range(30):
-        teams.append(teams_dict["data"][teamNum])
-
-    #get rosters
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+    )
+    mycursor = db.cursor()
+    teams = ['Atlanta_Hawks', 'Boston_Celtics', 'Brooklyn_Nets', 'Charlotte_Hornets', 'Chicago_Bulls', 'Cleveland_Cavaliers', 'Dallas_Mavericks', 'Denver_Nuggets', 'Detroit_Pistons', 'Golden_State_Warriors', 'Houston_Rockets', 'Indiana_Pacers', 'Los_Angeles_Clippers', 'Los_Angeles_Lakers', 'Menphis_Grizzlies', 'Miami_Heat', 'Milwaukee_Bucks', 'Minnesota_Timberwolves', 'New_Orleans_Pelicans', 'New_York_Knicks', 'Oklahoma_City_Thunder', 'Orlando_Magic', 'Philadelphia_76ers', 'Phoenix_Suns', 'Portland_Trail_Blazers', 'Sacramento_Kings', 'San_Antonio_Spurs', 'Toronto_Raptors', 'Utah_Jazz', 'Washington_Wizards']
     rosters = []
+    players = {}
     for team in teams:
-        time.sleep(1)
-        rosters_dict = commonteamroster.CommonTeamRoster(season="2018-19",team_id=team[1])
-        rosters_dict = rosters_dict.common_team_roster.get_dict()
-        rosters.append(rosters_dict["data"])
-    return render_template('teams.html', rosters=rosters)
+        sql = "SELECT * FROM " + team + "_Roster"
+        mycursor.execute(sql)
+        rosters = mycursor.fetchall()
+        sql = "SELECT * FROM playerstats WHERE(teamid = " + str(rosters[0][0]) + ") ORDER BY pts DESC"
+        mycursor.execute(sql)
+        players[team] = mycursor.fetchall()
+
+
+    return render_template('teams.html', rosters=players)
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
