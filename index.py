@@ -9,8 +9,6 @@ from datetime import datetime, timedelta
 from Data_Scripts import database
 from flask_cors import CORS
 import pandas as pd
-from nba_api.stats.endpoints import commonteamyears
-from nba_api.stats.endpoints import commonteamroster
 import time
 app = Flask(__name__)
 CORS(app)

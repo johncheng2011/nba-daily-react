@@ -4,5 +4,4 @@ lib
 .vscode
 __pycache__
 Data_Scripts/playersCSV
-Data_Scripts/database.py
 env
