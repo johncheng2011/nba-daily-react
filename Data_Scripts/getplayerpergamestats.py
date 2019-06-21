@@ -28,10 +28,10 @@ class NumpyMySQLConverter(mysql.connector.conversion.MySQLConverter):
         return float(value)
 
 db = mysql.connector.connect(
-    host =  'localhost',
-    user = 'root',
-    passwd = 'gall2droyilx',
-    database = 'nbaplayers'
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
 )
 
 db.set_converter_class(NumpyMySQLConverter)
