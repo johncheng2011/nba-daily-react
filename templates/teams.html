@@ -1,0 +1,27 @@
+{%extends 'layout.html'%}
+
+{%block content%}
+
+
+
+<div class="container-fluid" style="width:100%">
+    <div class="row">
+    {%for team in rosters%}
+    <div class="col-sm-4">
+            <br>
+            <h3>{{team|replace('_',' ')}}</h3>
+            {%for player in rosters[team]%}
+                {%set url = player[1]|string + '_' + player[0]|string%}
+                <a href="{{url_for('player_page',player=url)}}">{{player[1]}}</a>
+                <br>
+            {%endfor%}
+    </div>
+    {%endfor%}
+
+    </div>
+</div>
+
+
+
+
+{%endblock content%}

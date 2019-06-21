@@ -9,9 +9,12 @@ from datetime import datetime, timedelta
 from Data_Scripts import database
 from flask_cors import CORS
 import pandas as pd
-
+from nba_api.stats.endpoints import commonteamyears
+from nba_api.stats.endpoints import commonteamroster
+import time
 app = Flask(__name__)
 CORS(app)
+
 app.config['SECRET_KEY'] = 'asdf3234bdfe'
 
 
@@ -153,9 +156,48 @@ def getplayerszscores(date):
     players.sort(key = lambda x: x[1])
     return json.dumps(players,cls=DecimalEncoder)
 
-@app.route("/asdf")
-def player_page():
-    test = pd.read_csv('Data_Scripts/playersCSV/1713_Vince-Carter.csv')
-    return render_template('player_page.html', data=test)
+@app.route("/<player>")
+def player_page(player):
+    name,id = player.split('_')
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+)
+    mycursor = db.cursor()
+    sql = 'SELECT * FROM playergamelog WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
+    gamelog = mycursor.fetchall()
+    sql = 'SELECT * FROM playerstats WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
+    pergame = mycursor.fetchall()
+    sql = 'SELECT * FROM playerstatsz WHERE(playerid=%s)'%(id)
+    mycursor.execute(sql)
+    zscore = mycursor.fetchall()
+    return render_template('player_page.html', gamelog=gamelog, pergame=pergame,zscore=zscore)
+
+@app.route("/teams")
+def teams():
+    db = mysql.connector.connect(
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
+    )
+    mycursor = db.cursor()
+    teams = ['Atlanta_Hawks', 'Boston_Celtics', 'Brooklyn_Nets', 'Charlotte_Hornets', 'Chicago_Bulls', 'Cleveland_Cavaliers', 'Dallas_Mavericks', 'Denver_Nuggets', 'Detroit_Pistons', 'Golden_State_Warriors', 'Houston_Rockets', 'Indiana_Pacers', 'Los_Angeles_Clippers', 'Los_Angeles_Lakers', 'Menphis_Grizzlies', 'Miami_Heat', 'Milwaukee_Bucks', 'Minnesota_Timberwolves', 'New_Orleans_Pelicans', 'New_York_Knicks', 'Oklahoma_City_Thunder', 'Orlando_Magic', 'Philadelphia_76ers', 'Phoenix_Suns', 'Portland_Trail_Blazers', 'Sacramento_Kings', 'San_Antonio_Spurs', 'Toronto_Raptors', 'Utah_Jazz', 'Washington_Wizards']
+    rosters = []
+    players = {}
+    for team in teams:
+        sql = "SELECT * FROM " + team + "_Roster"
+        mycursor.execute(sql)
+        rosters = mycursor.fetchall()
+        sql = "SELECT * FROM playerstats WHERE(teamid = " + str(rosters[0][0]) + ") ORDER BY pts DESC"
+        mycursor.execute(sql)
+        players[team] = mycursor.fetchall()
+
+
+    return render_template('teams.html', rosters=players)
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

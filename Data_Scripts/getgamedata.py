@@ -1,12 +1,13 @@
 import mysql.connector
 from nba_api.stats.endpoints import leaguegamelog
+import database
 game = leaguegamelog.LeagueGameLog()
 game = game.get_dict()
 mydb = mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
 )
 mycursor = mydb.cursor()
 

@@ -5,7 +5,7 @@ import mysql.connector
 import time
 import numpy as np
 from operator import itemgetter
-
+import database
 
 def binarySearch(arr,l,r,target):
     while l<=r:
@@ -24,10 +24,10 @@ class NumpyMySQLConverter(mysql.connector.conversion.MySQLConverter):
         return float(value)
 
 db = mysql.connector.connect(
-    host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user = "wbe5sn77tagogvdz",
-    passwd = "n9eckiq9qeyssuqy",
-    database = "pg3wk6oqwj8tellc"
+    host =  database.databaseInfo["host"],
+    user = database.databaseInfo["user"],
+    passwd = database.databaseInfo["passwd"],
+    database = database.databaseInfo["database"]
 )
 
 db.set_converter_class(NumpyMySQLConverter)
