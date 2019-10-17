@@ -13,7 +13,7 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-app.config['SECRET_KEY'] = 'asdf3234bdfe'
+app.config['SECRET_KEY'] = database.secretkey
 
 
 
