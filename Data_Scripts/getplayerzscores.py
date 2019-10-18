@@ -7,6 +7,12 @@ import numpy as np
 from operator import itemgetter
 import database
 
+
+season = '2018-19'
+season_split = ''.join(season.split('-'))
+
+
+
 def binarySearch(arr,l,r,target):
     while l<=r:
         mid = int(l+(r-l)/2)
@@ -23,13 +29,7 @@ class NumpyMySQLConverter(mysql.connector.conversion.MySQLConverter):
     def _float64_to_mysql(self,value):
         return float(value)
 
-db = mysql.connector.connect(
-    host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
-)
-
+db = database.connectDB(season)
 db.set_converter_class(NumpyMySQLConverter)
 cursor = db.cursor()
 
@@ -46,13 +46,13 @@ for teamNum in range(30):
 rosters = []
 for team in teams:
     time.sleep(1)
-    rosters_dict = commonteamroster.CommonTeamRoster(season="2018-19",team_id=team[1])
+    rosters_dict = commonteamroster.CommonTeamRoster(season=season,team_id=team[1])
     rosters_dict = rosters_dict.common_team_roster.get_dict()
     rosters.append(rosters_dict["data"])
 
 
 #get playerstats
-leaguestats = leaguedashplayerstats.LeagueDashPlayerStats(per_mode_detailed="PerGame",season="2018-19")
+leaguestats = leaguedashplayerstats.LeagueDashPlayerStats(per_mode_detailed="PerGame",season=season)
 leaguestats = leaguestats.league_dash_player_stats.get_dict()
 leaguestats = leaguestats["data"]
 leaguestats.sort(key = lambda x: x[0])
@@ -124,15 +124,15 @@ for player in zscores:
 
 
 #create table if not exist
-sql = "CREATE TABLE IF NOT EXISTS playerstatsz (playerid INT, playername VARCHAR(255), teamid INT, teamabbr VARCHAR(20),gp INT,min DECIMAL(4,1) , fgz DECIMAL(4,2), ftz DECIMAL(4,2), fg3z DECIMAL(4,2), rebz DECIMAL(4,2), astz DECIMAL(4,2), stlz DECIMAL(4,2), blkz DECIMAL(4,2), ptsz DECIMAL(4,2), tovz DECIMAL(4,2), total DECIMAL(4,2), PRIMARY KEY (playerid))"
+sql = "CREATE TABLE IF NOT EXISTS playerstatsz"+season_split+" (playerid INT, playername VARCHAR(255), teamid INT, teamabbr VARCHAR(20),gp INT,min DECIMAL(4,1) , fgz DECIMAL(4,2), ftz DECIMAL(4,2), fg3z DECIMAL(4,2), rebz DECIMAL(4,2), astz DECIMAL(4,2), stlz DECIMAL(4,2), blkz DECIMAL(4,2), ptsz DECIMAL(4,2), tovz DECIMAL(4,2), total DECIMAL(4,2), PRIMARY KEY (playerid))"
 cursor.execute(sql)
 
 #pruneSQL for getting rid of players in table but no longer on active rosters
-pruneSQL = "DELETE FROM playerstatsz WHERE NOT("
+pruneSQL = "DELETE FROM playerstatsz"+season_split+" WHERE NOT("
 
 #add player into table
 for player in zscores:
-    sql = "INSERT INTO playerstatsz (playerid, playername, teamid, teamabbr, gp, min, fgz, ftz, fg3z, rebz, astz, stlz, blkz, ptsz, tovz, total) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    sql = "INSERT INTO playerstatsz"+season_split+" (playerid, playername, teamid, teamabbr, gp, min, fgz, ftz, fg3z, rebz, astz, stlz, blkz, ptsz, tovz, total) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     sql += " ON DUPLICATE KEY UPDATE teamid = %s, teamabbr = %s, gp = %s, min = %s, fgz = %s, ftz = %s, fg3z = %s, rebz = %s, astz = %s, stlz = %s, blkz = %s, ptsz = %s, tovz = %s, total = %s"
     values = (player[1],player[0],player[2],player[3],player[4],player[5],player[6],player[7],player[8],player[9],player[10],player[11],player[12],player[13],player[14],player[15],player[2],player[3],player[4],player[5],player[6],player[7],player[8],player[9],player[10],player[11],player[12],player[13],player[14],player[15])
     prt = sql%(values)

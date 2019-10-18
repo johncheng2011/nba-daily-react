@@ -1,7 +1,17 @@
+import mysql.connector
 databaseInfo = dict(
-host =  "d5x4ae6ze2og6sjo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-user = "wbe5sn77tagogvdz",
-passwd = "n9eckiq9qeyssuqy",
-database = "pg3wk6oqwj8tellc")
+    host =  'nbastats.csbgdmytwgow.us-east-1.rds.amazonaws.com',
+    user = 'admin',
+    passwd = 'WMYWlftGMwleL7qSjwWZ',
+    database = 'nbadata')
 
 secretkey = '9OCN2IXQRYFCY3CthRkS'
+
+
+def connectDB(season):
+    return  mysql.connector.connect(
+        host =  databaseInfo["host"],
+        user = databaseInfo["user"],
+        passwd = databaseInfo["passwd"],
+        database = 'season' + ''.join(season.split('-'))
+    )

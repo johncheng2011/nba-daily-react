@@ -1,6 +1,4 @@
 from flask import Flask, render_template, url_for, redirect, flash, request, jsonify
-from wtforms.fields.html5 import DateField
-from wtforms import SubmitField, RadioField
 from flask_wtf import FlaskForm
 import mysql.connector
 import json
@@ -8,6 +6,7 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 from Data_Scripts import database
 from flask_cors import CORS
+import forms
 import pandas as pd
 import time
 import random
@@ -39,15 +38,12 @@ def yesDate(date):
 app.jinja_env.filters['yesterdayDate'] = yesDate
 
 
-class date(FlaskForm):
-    enterDate = DateField('dateInput',format = '%Y-%m-%d',default=datetime(2018,10,16))
-    selectType = RadioField("Data Type", choices=[('1','per-game'),('2','zscores')],default='1')
-    submit = SubmitField('submit')
+
 
 
 @app.route("/", methods=['POST','GET'])
 def index():
-    form = date()
+    form = forms.date()
     db = mysql.connector.connect(
     host =  database.databaseInfo["host"],
     user = database.databaseInfo["user"],
@@ -72,12 +68,11 @@ def index():
     playerz = playerz[0]
     db.disconnect() 
     if form.validate_on_submit():
+        inDate = form.enterDate.data
         if(form.selectType.data == '1'):
-            inDate = form.enterDate.data
-            
             return redirect(url_for('players',date=inDate))
         else:
-            return redirect(url_for('playerzscores',date=form.enterDate.data))
+            return redirect(url_for('playerzscores',date=inDate))
     return render_template('index.html',form = form,title="home",player=player,playerz=playerz)
 
 
@@ -140,18 +135,22 @@ def playerzscores(date):
 
 @app.route("/_players/<date>")
 def playerdata(date):
-    db = mysql.connector.connect(
-    host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
-)
+
+    year,month,day = date.split('-')
+
+    if(int(month) > 8):
+        season = year+'-'+str((int(year)+1)%100)
+    else:
+        season = str(int(year)-1)+'-'+str(int(year)%100)
+    season_split = season.replace('-','')
+
+    db = database.connectDB(season)
     mycursor = db.cursor()
-    mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
+    mycursor.execute('SELECT * FROM games'+season_split+' WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()
     players = []
     for game in games:
-        mycursor.execute('SELECT * FROM playerstats WHERE(teamid = '+ str(game[1]) +')')
+        mycursor.execute('SELECT * FROM playerstats'+season_split+' WHERE(teamid = '+ str(game[1]) +')')
         players += mycursor.fetchall()
     
     db.disconnect()
@@ -160,19 +159,23 @@ def playerdata(date):
 
 @app.route("/_players_zscores/<date>")
 def getplayerszscores(date):
-    db = mysql.connector.connect(
-    host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
-)
+    year,month,day = date.split('-')
+
+    if(int(month) > 8):
+        season = year+'-'+str((int(year)+1)%100)
+    else:
+        season = str(int(year)-1)+'-'+str(int(year)%100)
+    season_split = season.replace('-','')
+
+
+    db = database.connectDB(season)
     mycursor = db.cursor()
-    mycursor.execute('SELECT * FROM games WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
+    mycursor.execute('SELECT * FROM games'+season_split+' WHERE(gamedate = STR_TO_DATE("'+ str(date) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()
     players = []
     for game in games:
         
-        mycursor.execute('SELECT * FROM playerstatsz WHERE(teamid = '+ str(game[1]) +')')
+        mycursor.execute('SELECT * FROM playerstatsz'+season_split+' WHERE(teamid = '+ str(game[1]) +')')
         players += mycursor.fetchall()
     db.disconnect()
     players.sort(key = lambda x: x[1])
