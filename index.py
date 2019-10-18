@@ -84,21 +84,8 @@ def games():
 
 @app.route("/all_players")
 def all_players():
-    db = mysql.connector.connect(
-    host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
-)
-    mycursor = db.cursor()
-    players = []
-    
-    mycursor.execute('SELECT * FROM playerstats')
-    players += mycursor.fetchall()
-    
-    db.disconnect()
-    # players.sort(key = lambda x: x[1])
-    return render_template('all_players.html',players=players)
+   
+    return render_template('all_players.html')
 
 
 @app.route("/_all_players")
@@ -115,21 +102,8 @@ def allPlayersData():
 
 @app.route("/all_players_zscores")
 def all_playersz():
-    db = mysql.connector.connect(
-    host =  database.databaseInfo["host"],
-    user = database.databaseInfo["user"],
-    passwd = database.databaseInfo["passwd"],
-    database = database.databaseInfo["database"]
-)
-    mycursor = db.cursor()
-    players = []
     
-    mycursor.execute('SELECT * FROM playerstatsz')
-    players += mycursor.fetchall()
-    
-    db.disconnect()
-    players.sort(key = lambda x: x[1])
-    return render_template('all_players_zscores.html',players=players)
+    return render_template('all_players_zscores.html')
 
 @app.route("/_all_players_zscores")
 def allPlayersZData():
