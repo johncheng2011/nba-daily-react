@@ -80,7 +80,7 @@ def index():
 
 @app.route("/games")
 def games():
-    return render_template('games.html')
+    return 'hello'
 
 @app.route("/all_players")
 def all_players():
