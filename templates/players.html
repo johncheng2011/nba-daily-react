@@ -21,7 +21,8 @@
     <script>
    
     
-     $.getJSON('https://nbadaily.herokuapp.com/_players/{{date}}',function(data){
+    //  $.getJSON('https://nbadaily.herokuapp.com/_players/{{date}}',function(data){
+    $.getJSON('/_players/{{date}}',function(data){
         $('#your-table').DataTable( 
 	    {
             

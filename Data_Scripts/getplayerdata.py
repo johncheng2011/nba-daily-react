@@ -6,7 +6,7 @@ import time
 import database
 
 
-season = '2018-19'
+season = '2019-20'
 season_split = ''.join(season.split('-'))
 
 def binarySearch(arr,l,r,target):

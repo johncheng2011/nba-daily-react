@@ -130,7 +130,7 @@ def playerzscores(date):
 
 @app.route("/_players/<date>")
 def playerdata(date):
-
+    
     year,month,day = date.split('-')
 
     if(int(month) > 8):
@@ -145,11 +145,13 @@ def playerdata(date):
     games = mycursor.fetchall()
     players = []
     for game in games:
-        mycursor.execute('SELECT * FROM playerstats'+season_split+' WHERE(teamid = '+ str(game[1]) +')')
+        mycursor.execute('SELECT * FROM playerstats'+season_split+' WHERE(teamid = '+ str(game[0]) +')')
         players += mycursor.fetchall()
     
     db.disconnect()
+    print(season_split)
     players.sort(key = lambda x: x[1])
+    
     return json.dumps(players,cls=DecimalEncoder)
 
 @app.route("/_players_zscores/<date>")
@@ -170,7 +172,7 @@ def getplayerszscores(date):
     players = []
     for game in games:
         
-        mycursor.execute('SELECT * FROM playerstatsz'+season_split+' WHERE(teamid = '+ str(game[1]) +')')
+        mycursor.execute('SELECT * FROM playerstatsz'+season_split+' WHERE(teamid = '+ str(game[0]) +')')
         players += mycursor.fetchall()
     db.disconnect()
     players.sort(key = lambda x: x[1])

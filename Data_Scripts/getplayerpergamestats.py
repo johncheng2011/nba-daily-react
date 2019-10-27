@@ -11,7 +11,7 @@ from operator import itemgetter
 import database
 
 
-season = '2018-19'
+season = '2019-20'
 season_split = ''.join(season.split('-'))
 
 def binarySearch(arr,l,r,target):
@@ -66,7 +66,7 @@ cursor.execute(sql)
 
 for player in leaguestats:
     player_stats = playergamelog.PlayerGameLog(player_id = player[0], season = season)
-    time.sleep(1)
+    time.sleep(.5)
     player_stats = player_stats.player_game_log.get_data_frame()
     for index, game in player_stats.iterrows():
         sql = "INSERT INTO playergamelog"+season_split+" (seasonid,playerid,gameid,gamedate,matchup,win,min,fgm,fga,fg_pct,fg3m,fg3a,fg3_pct,ftm,fta,ft_pct,oreb,dreb,reb,ast,stl,blk,tov,pf,pts,plusminus) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE seasonid = %s"
