@@ -55,7 +55,7 @@ const navBarItems: Array<navItem> = [
   // },
   {
     value: "All Player's Stats",
-    icon: "calendar",
+    icon: "",
     to:"/all_players_pergame",
     LinkComponent: withRouter(NavLink),
     useExact:true,
@@ -66,7 +66,7 @@ const navBarItems: Array<navItem> = [
   },
   {
     value: "All Player's ZScores",
-    icon: "file",
+    icon: "",
     to:"/all_players_zscores",
     LinkComponent: withRouter(NavLink),
     useExact: true,

@@ -6,9 +6,9 @@ export class RandomPlayerTable extends Component {
         playerZScores:[],
     }
     componentDidMount() {
-        var url = 'http://localhost:5000/_rand_player' 
+        // var url = 'http://localhost:5000/_rand_player' 
         // var url = 'http://localhost:5000/_allPerGame'
-        // var   url = '/_rand_player'
+        var   url = '/_rand_player'
         axios.get(url)
         // axios.get('/_allPlayerPerGame')
         .then(res => (
