@@ -7,47 +7,19 @@ export class RandomPlayerTable extends Component {
     state = {
         playerPerGame:[],
         playerZScores:[],
-        cards: [{
-            title: "Employment Growth",
-            data: {
-              columns: [
-                // each columns data
-                ["data1", 2, 8, 6, 7, 14, 11],
-                ["data2", 5, 15, 11, 15, 21, 25],
-                ["data3", 17, 18, 21, 20, 30, 29],
-              ],
-              type: "line", // default type of chart
-              colors: {
-                data1: colors.orange,
-                data2: colors.blue,
-                data3: colors.green,
-              },
-              names: {
-                // name of each serie
-                data1: "Development",
-                data2: "Marketing",
-                data3: "Sales",
-              },
-            },
-            axis: {
-              x: {
-                type: "category",
-                // name of each category
-                categories: ["2013", "2014", "2015", "2016", "2017", "2018"],
-              },
-            },
-          },],
+        cards: [],
     }
     componentDidMount() {
         // var url = 'http://localhost:5000/_rand_player' 
-        // var url = 'http://localhost:5000/_allPerGame'
         var   url = '/_rand_player'
         axios.get(url)
-        // axios.get('/_allPlayerPerGame')
         .then(res => (
             this.setState({playerPerGame: res.data.perGame, playerZScores: res.data.zScore})
+            ,axios.get('/test/'+res.data.perGame.playerid)
+            // ,axios.get('http://localhost:5000/test/'+res.data.perGame.playerid)
+            .then(res2 => (this.setState({cards:res2.data})))
         ))
-        // this.setState({player: res.data})
+        
         }
     render() {
 
@@ -103,7 +75,7 @@ export class RandomPlayerTable extends Component {
                     </tbody>
                     
                 </table>
-                {/* {this.state.cards.map((chart, i) => (
+                {this.state.cards.map((chart, i) => (
             <Grid.Col key={i} md={6} xl={4}>
               <Card title={chart.title}>
                 <Card.Body>
@@ -121,7 +93,7 @@ export class RandomPlayerTable extends Component {
                 </Card.Body>
               </Card>
             </Grid.Col>
-          ))} */}
+          ))}
             </React.Fragment>
         )
     }
