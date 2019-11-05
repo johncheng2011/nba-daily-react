@@ -128,12 +128,7 @@ export class Home extends Component {
                 <div className = "row" style = {{paddingLeft: 11, paddingTop:10}}>
                 <RandomPlayerTable />
                 </div>
-            </SiteWrapper>
-              <Link to="/about">about</Link>
-              <Badge color="primary" className="mr-1">
-                primary
-              </Badge>
-              <h1>hello </h1>
+            </SiteWrapper> 
             
             </div>
         )
