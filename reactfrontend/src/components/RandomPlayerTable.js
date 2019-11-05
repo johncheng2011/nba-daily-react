@@ -39,9 +39,9 @@ export class RandomPlayerTable extends Component {
           },],
     }
     componentDidMount() {
-        var url = 'http://localhost:5000/_rand_player' 
+        // var url = 'http://localhost:5000/_rand_player' 
         // var url = 'http://localhost:5000/_allPerGame'
-        // var   url = '/_rand_player'
+        var   url = '/_rand_player'
         axios.get(url)
         // axios.get('/_allPlayerPerGame')
         .then(res => (
@@ -103,7 +103,7 @@ export class RandomPlayerTable extends Component {
                     </tbody>
                     
                 </table>
-                {this.state.cards.map((chart, i) => (
+                {/* {this.state.cards.map((chart, i) => (
             <Grid.Col key={i} md={6} xl={4}>
               <Card title={chart.title}>
                 <Card.Body>
@@ -121,7 +121,7 @@ export class RandomPlayerTable extends Component {
                 </Card.Body>
               </Card>
             </Grid.Col>
-          ))}
+          ))} */}
             </React.Fragment>
         )
     }

@@ -6,8 +6,8 @@ export class TodaysGameCard extends Component {
         games:[],
     }
     componentDidMount(){
-        var url = 'http://localhost:5000/_today_games'
-        // var url = "/_today_games"
+        // var url = 'http://localhost:5000/_today_games'
+        var url = "/_today_games"
         axios.get(url)
         .then(res =>(this.setState({games:res.data})))
             // this.setState({games:res})
