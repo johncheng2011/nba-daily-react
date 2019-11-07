@@ -125,8 +125,10 @@ export class Home extends Component {
                 </Card>
                 <TodaysGameCard/>
                 </div>
-                <div className = "row" style = {{paddingLeft: 11, paddingTop:10}}>
+                <div  style = {{paddingLeft: 11, paddingTop:10}}>
+                
                 <RandomPlayerTable />
+                
                 </div>
             </SiteWrapper> 
             

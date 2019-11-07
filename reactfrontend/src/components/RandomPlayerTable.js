@@ -25,8 +25,13 @@ export class RandomPlayerTable extends Component {
 
         return (
             <React.Fragment>
-                <h1>{this.state.playerPerGame.playername}</h1>
-                <h3>{this.state.playerPerGame.teamabbr}</h3>
+                {/* <h1>Random</h1> */}
+                <div style = {{backgroundColor:'rgb(49, 245, 245,.2)',borderRadius:20,textAlign:'center'}}>
+                  
+                    <h1>{this.state.playerPerGame.playername}</h1>
+                    <h2>Team: {this.state.playerPerGame.teamabbr}</h2>
+                    <h2>Games Played: {this.state.playerPerGame.gp}</h2>
+                </div>
                 <table className = "table">
                     <thead>
                         <tr>
@@ -75,6 +80,7 @@ export class RandomPlayerTable extends Component {
                     </tbody>
                     
                 </table>
+                <div className = "row">
                 {this.state.cards.map((chart, i) => (
             <Grid.Col key={i} md={6} xl={4}>
               <Card title={chart.title}>
@@ -89,11 +95,15 @@ export class RandomPlayerTable extends Component {
                       bottom: 0,
                       top: 0,
                     }}
+                    colors={{
+                      data1:'red'
+                    }}
                   />
                 </Card.Body>
               </Card>
             </Grid.Col>
           ))}
+          </div>
             </React.Fragment>
         )
     }

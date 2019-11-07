@@ -167,13 +167,10 @@ def todayGames():
 
 @app.route('/test/<player>')
 def test(player):
-    print(player)
     db = database.connectDB('2019-20')
     mycursor = db.cursor(dictionary= True)
     mycursor.execute("SELECT * FROM playergamelog201920 WHERE(playerid = %s)" %(player))
     games = mycursor.fetchall()
-    
-
     fg_pct = {}
     ft_pct = {}
     fg3m = {}
@@ -183,7 +180,6 @@ def test(player):
     blk = {}
     pts = {}
     tov = {}
-    print(games)
     chartList = [fg_pct,ft_pct,fg3m,reb,ast,stl,blk,pts,tov]
     fg_pct['title'] = "Field Goal Percentage"
     ft_pct['title'] = "Free Throw Percentage"
@@ -200,14 +196,20 @@ def test(player):
             'x':{
                 'type':'category',
                 'categories':[]
-            }
+            },
+            'y':{}
         }
         chart['data'] = {
             'columns':[['data1']],
             'type':'line',
             'names':{'data1':chart['title']}
         }
-    
+        chart['axis']['x']['show'] = False
+        chart['axis']['y']['min'] = 0
+    fg_pct['axis']['y']['max'] = 1
+    ft_pct['axis']['y']['max'] = 1
+    fg_pct['axis']['y']['padding'] = {'top':0,'bottom':0}
+    ft_pct['axis']['y']['padding'] = {'top':0,'bottom':0}
     for game in games:
         gamedate = date.strftime(game['gamedate'],'%m/%d/%Y')
         fg_pct['data']['columns'][0].append(game['fg_pct'])
@@ -222,38 +224,6 @@ def test(player):
         for chart in chartList:
             chart['axis']['x']['categories'].append(gamedate)
 
-    retJson = {}
-    retJson['title'] = str(player)
-    retJson['data'] = {
-        'columns':[["data1",2,8,6,7.2,14.1,11.2], ["data2", 5, 15, 11.3, 15, 21, 25], ["data3", 17, 18, 21, 20, 30, 29]],
-        'type':"line",
-        'names':{'data1':'Development','data2':'Marketing','data3':'Sales'}
-
-    }
-    retJson['axis'] = {
-        'x':{
-            'type':'category',
-            'categories':["2013", "2014", "2015", "2016", "2017", "2018"]
-        }
-    }
-
-    retJson2 = {}
-    retJson2['title'] = 'pts reb ast'
-    retJson2['data'] = {
-        'columns':[["data1",2,8,6,7,14,11], ["data2", 5, 15, 11, 15, 21, 25], ["data3", 17, 18, 21, 20, 30, 29]],
-        'type':"line",
-        'names':{'data1':'pts','data2':'reb','data3':'ast'}
-
-    }
-    retJson2['axis'] = {
-        'x':{
-            'type':'category',
-            'categories':["10/22/19", "10/25/19", "10/26/19", "10/27/19", "10/28/19", "10/29/19"]
-        }
-    }
-   
-    
-    retList = [retJson,retJson2,fg_pct]
     return jsonify(chartList)
 @app.route('/players/<date>')
 def playersPerGame(date):
