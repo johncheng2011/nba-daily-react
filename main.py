@@ -151,7 +151,6 @@ def todayGames():
     mycursor.execute('SELECT matchup FROM games201920 WHERE(gamedate = STR_TO_DATE("'+ str(today) +'","%Y-%m-%e")) ')
     games = mycursor.fetchall()
     db.disconnect()
-    
     #remove duplicates
     seen = set()
     new_games = []

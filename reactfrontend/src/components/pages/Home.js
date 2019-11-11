@@ -103,13 +103,14 @@ export class Home extends Component {
                         <h4>Pick A Date</h4>
                     </Card.Header>
                     <Card.Body>
-                        select a date and see whos playing
+                        select a date and see who's playing
                         <DatePicker selected={this.state.date} onChange={date => this.setState({date:date})} />
-                        {/* <TypeRadio setType = {this.setType}/> */}
+                        {/* <TypeRadio update = {this.setType}/> */}
                         <div >
-                            <input type="radio" value="perGame" name="type"  onChange={this.setType.bind(this)}/> Per Game
+                            <input type="radio" value="perGame" name="type" defaultChecked onChange={this.setType.bind(this)}/> Per Game
                             <input type="radio" value="ZScores" name="type"  onChange={this.setType.bind(this)}/> Z Scores
                         </div>
+                        
                         <Link to={'/'+this.getTypeURL()+'/'+this.getDateURL()}>
                         <Button style={{margin:10}} pill color='primary' to="/">Submit</Button></Link>
                     </Card.Body>
@@ -117,10 +118,16 @@ export class Home extends Component {
                 </Card>
                 <Card className = "col-md-4">
                     <Card.Header>
-                        About
+                        <h4>About</h4>
                     </Card.Header>
                     <Card.Body>
-                        WIP
+                        <div>
+                        Choose a date and compare the stats of players playing on that day.
+                        </div>
+                        <br/>
+                        <div>
+                            Enjoy detailed stats of a random player below!
+                        </div>
                     </Card.Body>                    
                 </Card>
                 <TodaysGameCard/>

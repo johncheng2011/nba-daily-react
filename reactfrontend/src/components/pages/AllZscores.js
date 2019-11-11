@@ -18,7 +18,7 @@ export class PlayersZScores extends Component {
     componentDidMount() {
         // var   url = 'http://localhost:5000/_zscores/' + this.props.match.params.date;
         // var url = 'http://localhost:5000/_allZscores'
-        var   url = '/_allPlayerZscores'
+        var   url = '/_allZScores'
         axios.get(url)
         // axios.get('/_allPlayerPerGame')
         .then(res => this.setState({players: res.data}))
