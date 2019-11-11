@@ -11,6 +11,8 @@ CORS(app)
 
 app.config['SECRET_KEY'] = database.secretkey
 
+
+
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, Decimal):

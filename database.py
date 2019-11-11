@@ -15,3 +15,4 @@ def connectDB(season):
         passwd = databaseInfo["passwd"],
         database = 'season' + ''.join(season.split('-'))
     )
+
