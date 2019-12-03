@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import TypeRadio from '../TypeRadio';
 import RandomPlayerTable from '../RandomPlayerTable';
 import TodaysGameCard from '../TodaysGameCard';
+import {TwitterTimelineEmbed} from 'react-twitter-embed';
 import "tabler-react/dist/Tabler.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -103,41 +104,42 @@ export class Home extends Component {
                         <h4>Pick A Date</h4>
                     </Card.Header>
                     <Card.Body>
-                        select a date and see who's playing
+                        select a date and see whos playing
                         <DatePicker selected={this.state.date} onChange={date => this.setState({date:date})} />
-                        {/* <TypeRadio update = {this.setType}/> */}
+                        {/* <TypeRadio setType = {this.setType}/> */}
                         <div >
-                            <input type="radio" value="perGame" name="type" defaultChecked onChange={this.setType.bind(this)}/> Per Game
+                            <input type="radio" value="perGame" name="type"  onChange={this.setType.bind(this)}/> Per Game
                             <input type="radio" value="ZScores" name="type"  onChange={this.setType.bind(this)}/> Z Scores
                         </div>
-                        
                         <Link to={'/'+this.getTypeURL()+'/'+this.getDateURL()}>
                         <Button style={{margin:10}} pill color='primary' to="/">Submit</Button></Link>
                     </Card.Body>
                     
                 </Card>
+                <TwitterTimelineEmbed
+  sourceType="profile"
+  screenName="WebEmbiid"
+  options={{height: 400}}
+/>
                 <Card className = "col-md-4">
                     <Card.Header>
-                        <h4>About</h4>
+                        About
                     </Card.Header>
                     <Card.Body>
-                        <div>
-                        Choose a date and compare the stats of players playing on that day.
-                        </div>
-                        <br/>
-                        <div>
-                            Enjoy detailed stats of a random player below!
-                        </div>
+                        WIP
                     </Card.Body>                    
                 </Card>
                 <TodaysGameCard/>
                 </div>
-                <div  style = {{paddingLeft: 11, paddingTop:10}}>
-                
+                <div className = "row" style = {{paddingLeft: 11, paddingTop:10}}>
                 <RandomPlayerTable />
-                
                 </div>
-            </SiteWrapper> 
+            </SiteWrapper>
+              <Link to="/about">about</Link>
+              <Badge color="primary" className="mr-1">
+                primary
+              </Badge>
+              <h1>hello </h1>
             
             </div>
         )
